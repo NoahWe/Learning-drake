@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="Double_Leg_Collision">
+  <!-- Start with ground -->
+
+  <link name="ground">
+    <visual>
+      <origin xyz="0 0 -1" />
+      <geometry>
+        <box size="20 20 2" />
+      </geometry>
+      <material name="dark_green">
+        <color rgba="0.11 .4 0.11 1" />
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 -1" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="20 20 2"/>
+      </geometry>
+    </collision> -->
+  </link>
+
+  <joint name="ground_is_world" type="fixed">
+    <parent link="world"/>
+    <child link="ground"/>
+  </joint>
+
+<!-- Balancing mass -->
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.100"/>
+    <inertia ixx="1.6E-5" ixy="0.0" ixz="0.0" iyy="1.6E-5" iyz="0.0" izz="1.6E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+    <material name="black">
+      <color rgba="1 1 1 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<link name="balancing_shaft">
+  <inertial>
+    <origin xyz="0.0 0.0 0.07" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="1.2875E-4" ixy="0.0" ixz="0.0" iyy="1.2875E-4" iyz="0.0" izz="7.5E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.07" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.10"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<link name="balancing_mass">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="1.00"/>
+    <inertia ixx="1.6E-4" ixy="0.0" ixz="0.0" iyy="1.6E-4" iyz="0.0" izz="1.6E-4"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+    <material name="red">
+      <color rgba="0.6 0.2 0.2 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="shaft_base" type="fixed">
+  <origin xyz="0.0 0.0 0.14" rpy="0.0 0.0 0.0"/>
+  <parent link="balancing_shaft"/>
+  <child link="balancing_mass"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<link name="dummy_shaft">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.0"/>
+    <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+  </inertial>
+</link>
+
+<joint name="shaft_pitch" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  <parent link="dummy_shaft"/>
+  <child link="balancing_shaft"/>
+  <axis xyz="0.0 1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="shaft_roll" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0 0.0"/>
+  <parent link="base_link"/>
+  <child link="dummy_shaft"/>
+  <axis xyz="1 0.0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<!-- Hip links -->
+
+<link name="hip_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="1.2875E-4" ixy="0.0" ixz="0.0" iyy="1.2875E-4" iyz="0.0" izz="7.5E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.05"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<link name="hip_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="1.2875E-4" ixy="0.0" ixz="0.0" iyy="1.2875E-4" iyz="0.0" izz="7.5E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.05"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="fixed_base_link_R" type="fixed">
+  <origin xyz="0.02 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+  <parent link="base_link"/>
+  <child link="hip_R"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<joint name="hip_base_link_L" type="fixed">
+  <origin xyz="-0.02 0.0 0.0" rpy="0.0 -1.570796327 0.0"/>
+  <parent link="base_link"/>
+  <child link="hip_L"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<!-- Hip Balls -->
+
+<link name="hip_ball_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <mass value="0.02"/>
+    <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+      <material name="green">
+        <color rgba="0.2 0.6 0.2 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<link name="hip_ball_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <mass value="0.02"/>
+    <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+      <material name="green">
+        <color rgba="0.2 0.6 0.2 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="fixed_hip_L" type="fixed">
+  <origin xyz="0.0 0.0 0.07" rpy="0.0 1.570796327 0.0"/>
+  <parent link="hip_L"/>
+  <child link="hip_dummy_L"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<joint name="fixed_hip_R" type="fixed">
+  <origin xyz="0.0 0.0 0.07" rpy="0.0 1.570796327 0.0"/>
+  <parent link="hip_R"/>
+  <child link="hip_dummy_R"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<!-- Hip dummies -->
+
+<link name="hip_dummy_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.0"/>
+    <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+  </inertial>
+</link>
+
+<link name="hip_dummy_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.0"/>
+    <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+  </inertial>
+</link>
+
+<!-- Hip joints -->
+
+<joint name="Hip_roll_R" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  <parent link="hip_dummy_R"/>
+  <child link="hip_ball_R"/>
+  <axis xyz="0 -1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="Hip_Pitch_R" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  <parent link="hip_ball_R"/>
+  <child link="upper_leg_R"/>
+  <axis xyz="1 0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="Hip_roll_L" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  <parent link="hip_dummy_L"/>
+  <child link="hip_ball_L"/>
+  <axis xyz="0 1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="Hip_Pitch_L" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="3.14159265359 0.0 0.0"/>
+  <parent link="hip_ball_L"/>
+  <child link="upper_leg_L"/>
+  <axis xyz="-1 0.0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<!-- Upper legs -->
+
+<link name="upper_leg_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.095" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.095" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<link name="upper_leg_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.095" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.095" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<!-- Knees -->
+
+<link name="knee_L">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.2 0.2 0.6 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+   <link name="knee_R">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.2 0.2 0.6 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- Knee joints -->
+
+<joint name="knee_upper_L" type="fixed">
+  <origin xyz="0.0 0.0 0.19" rpy="0.0 0.0 0.0"/>
+  <parent link="upper_leg_L"/>
+  <child link="knee_L"/>
+</joint>
+
+<joint name="knee_L" type="revolute">
+  <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+  <parent link="knee_L"/>
+  <child link="lower_leg_L"/>
+  <axis xyz="-1 0.0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="knee_upper_R" type="fixed">
+  <origin xyz="0.0 0.0 0.19" rpy="0.0 0.0 0.0"/>
+  <parent link="upper_leg_R"/>
+  <child link="knee_R"/>
+</joint>
+
+<joint name="knee_R" type="revolute">
+  <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+  <parent link="knee_R"/>
+  <child link="lower_leg_R"/>
+  <axis xyz="1 0.0 0.0"/>
+<limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<!-- Lower legs -->
+
+<link name="lower_leg_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<link name="lower_leg_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<!-- Feet -->
+
+<link name="foot_L">
+  <inertial>
+    <origin xyz="0.0 0.02 0.02" rpy="0.0 0.0 0.0"/>
+    <mass value="0.020"/>
+    <inertia ixx="3.2E-6" ixy="0.0" ixz="0.0" iyy="3.2E-6" iyz="0.0" izz="3.2E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.02 0.02" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <box size="0.08 0.12 0.02"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+  <!-- <collision>
+    <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+  </collision> -->
+</link>
+
+  <link name="foot_R">
+    <inertial>
+      <origin xyz="0.0 -0.02 0.02" rpy="0.0 0.0 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="3.2E-6" ixy="0.0" ixz="0.0" iyy="3.2E-6" iyz="0.0" izz="3.2E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 -0.02 0.02" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.08 0.12 0.02"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision> -->
+  </link>
+
+<!-- Foot dummies -->
+
+<link name="foot_dummy_L">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+<link name="foot_dummy_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.0"/>
+    <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+  </inertial>
+</link>
+
+<!-- Ankle joints -->
+
+<joint name="foot_leg_pitch_L" type="revolute">
+  <origin xyz="0.0 0.0 0.14" rpy="0.0 0.0 0.0"/>
+  <parent link="lower_leg_L"/>
+  <child link="foot_dummy_L"/>
+  <axis xyz="1 0.0 0.0"/>
+<limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="foot_leg_roll_L" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0.0 0.0"/>
+  <parent link="foot_dummy_L"/>
+  <child link="foot_L"/>
+  <axis xyz="0.0 -1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+ 
+<joint name="foot_leg_pitch_R" type="revolute">
+  <origin xyz="0.0 0.0 0.14" rpy="0.0 0.0 0.0"/>
+  <parent link="lower_leg_R"/>
+  <child link="foot_dummy_R"/>
+  <axis xyz="1 0.0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="foot_leg_roll_R" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0.0 0.0"/>
+  <parent link="foot_dummy_R"/>
+  <child link="foot_R"/>
+  <axis xyz="0.0 -1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<!-- Collisions dummies left foot -->
+
+<link name="collision_dummy_L_BR">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_L_BL">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_L_FR">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_L_FL">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_L_C">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+</link>
+
+<!-- Collision dummies right foot -->
+
+<link name="collision_dummy_R_BR">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_R_BL">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_R_FR">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_R_FL">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <!-- <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </collision> -->
+</link>
+
+<link name="collision_dummy_R_C">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+      <material>
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+</link>
+
+<!-- Joint dummies left foot -->
+
+<joint name="collision_L_BR" type="fixed">
+  <origin xyz="-0.04 -0.04 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_L"/>
+  <child link="collision_dummy_L_BR"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_L_BL" type="fixed">
+  <origin xyz="0.04 -0.04 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_L"/>
+  <child link="collision_dummy_L_BL"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_L_FR" type="fixed">
+  <origin xyz="-0.04 0.08 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_L"/>
+  <child link="collision_dummy_L_FR"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_L_FL" type="fixed">
+  <origin xyz="0.04 0.08 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_L"/>
+  <child link="collision_dummy_L_FL"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_L_C" type="fixed">
+  <origin xyz="0.0 0.02 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_L"/>
+  <child link="collision_dummy_L_C"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<!-- Joint dummies right foot -->
+
+<joint name="collision_R_BR" type="fixed">
+  <origin xyz="0.04 0.04 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_R"/>
+  <child link="collision_dummy_R_BR"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_R_BL" type="fixed">
+  <origin xyz="-0.04 0.04 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_R"/>
+  <child link="collision_dummy_R_BL"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_R_FR" type="fixed">
+  <origin xyz="0.04 -0.08 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_R"/>
+  <child link="collision_dummy_R_FR"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_R_FL" type="fixed">
+  <origin xyz="-0.04 -0.08 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_R"/>
+  <child link="collision_dummy_R_FL"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<joint name="collision_R_C" type="fixed">
+  <origin xyz="0.0 -0.02 0.030" rpy="0 0.0 0.0"/>
+  <parent link="foot_R"/>
+  <child link="collision_dummy_R_C"/>
+  <axis xyz="0.0 0.0 0.0"/>
+</joint>
+
+<!-- Robot transmissions -->
+
+<transmission type="SimpleTransmission" name="foot_roll_L">
+  <actuator name="foot_roll_L" />
+  <joint name="foot_leg_roll_L" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="foot_pitch_L">
+  <actuator name="foot_pitch_L" />
+  <joint name="foot_leg_pitch_L" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="foot_roll_R">
+  <actuator name="foot_roll_R" />
+  <joint name="foot_leg_roll_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="foot_pitch_R">
+  <actuator name="foot_pitch_R" />
+  <joint name="foot_leg_pitch_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Knee_Torque_L">
+  <actuator name="knee_trans_L" />
+  <joint name="knee_L"/>
+</transmission>
+
+<transmission type="SimpleTransmission" name="Knee_Torque_R">
+  <actuator name="knee_trans_R" />
+  <joint name="knee_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Pitch">
+  <actuator name="Hip_Pitch_L" />
+  <joint name="Hip_Pitch_L" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Roll">
+  <actuator name="Hip_Roll_L" />
+  <joint name="Hip_roll_L" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Pitch_R">
+  <actuator name="Hip_Pitch_R" />
+  <joint name="Hip_Pitch_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Roll_R">
+  <actuator name="Hip_Roll_R" />
+  <joint name="Hip_roll_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Shaft_Pitch">
+  <actuator name="Shaft_Pitch" />
+  <joint name="shaft_pitch" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Shaft_Roll">
+  <actuator name="Shaft_Roll" />
+  <joint name="shaft_roll" />
+</transmission>
+
+</robot>

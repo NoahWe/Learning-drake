@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<robot name="Four Bar">
+
+    <link name="left">
+        <inertial>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <mass value="21.0"/>
+            <inertia ixx="1.8025" ixy="0.0" ixz="0.0" iyy="1.8025" iyz="0.0" izz="0.105"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.1" length="1"/>
+            </geometry>
+            <material name="Blue">
+                <color rgba="0.2 0.2 0.6 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="left_world" type="revolute">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="world"/>
+        <child link="left"/>
+        <axis xyz="0.0 1 0.0"/>
+    </joint>
+
+    <link name="top">
+        <inertial>
+            <origin xyz="0.0 0.0 1" rpy="0.0 0.0 0.0"/>
+            <mass value="42.0"/>
+            <inertia ixx="14.105" ixy="0.0" ixz="0.0" iyy="14.105" iyz="0.0" izz="0.21"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 1" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.1" length="2"/>
+            </geometry>
+            <material name="Blue">
+                <color rgba="0.2 0.2 0.6 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="left_top" type="revolute">
+        <origin xyz="0.0 0.0 1.0" rpy="0.0 1.570796327 0.0"/>
+        <parent link="left"/>
+        <child link="top"/>
+        <axis xyz="0.0 1 0.0"/>
+    </joint>
+
+    <link name="top_dummy">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="14.105" ixy="0.0" ixz="0.0" iyy="14.105" iyz="0.0" izz="0.21"/>
+        </inertial>
+        <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.05 0.05 0.05"/>
+                <material>
+                <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="top_dummy_fixed" type="revolute">
+        <origin xyz="0.0 0.0 2.0" rpy="0.0 0.0 0.0"/>
+        <parent link="top"/>
+        <child link="top_dummy"/>
+        <axis xyz="0.0 1 0.0"/>
+    </joint>
+
+    <link name="right">
+        <inertial>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <mass value="21.0"/>
+            <inertia ixx="1.8025" ixy="0.0" ixz="0.0" iyy="1.8025" iyz="0.0" izz="0.105"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.1" length="1"/>
+            </geometry>
+            <material name="Blue">
+                <color rgba="0.2 0.2 0.6 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="world_right" type="revolute">
+        <origin xyz="2.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="world"/>
+        <child link="right"/>
+        <axis xyz="0.0 1 0.0"/>
+    </joint>
+
+    <link name="right_dummy">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="14.105" ixy="0.0" ixz="0.0" iyy="14.105" iyz="0.0" izz="0.21"/>
+        </inertial>
+        <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.05 0.05 0.05"/>
+                <material>
+                <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="right_dummy_fixed" type="fixed">
+        <origin xyz="0.0 0.0 1" rpy="0.0 0.0 0.0"/>
+        <parent link="right"/>
+        <child link="right_dummy"/>
+        <axis xyz="0.0 0.0 0.0"/>
+    </joint>
+  
+    <transmission type="SimpleTransmission" name="Left_Bottom">
+        <actuator name="left_joint" />
+        <joint name="left_world" />
+    </transmission>
+
+</robot>

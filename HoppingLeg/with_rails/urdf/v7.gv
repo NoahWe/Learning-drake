@@ -1,0 +1,17 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"slider" [label="slider"];
+"hip" [label="hip"];
+"link_1" [label="link_1"];
+"link_2" [label="link_2"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "rail_prismatic" [label="xyz: 0 0 0.5 \nrpy: 0 -0 0"]
+"rail_prismatic" -> "slider"
+"slider" -> "force_sensor" [label="xyz: 0.036 0 0 \nrpy: -1.5708 -0 1.5708"]
+"force_sensor" -> "hip"
+"hip" -> "hip_joint" [label="xyz: -0.01525 0 -0.059 \nrpy: -1.5708 -0 1.5708"]
+"hip_joint" -> "link_1"
+"link_1" -> "knee_joint" [label="xyz: 0.205 0 0.099 \nrpy: 0 -0 0"]
+"knee_joint" -> "link_2"
+}

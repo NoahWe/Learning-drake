@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="Simple_Leg_L">
+  <!-- Start with ground -->
+
+  <link name="ground">
+    <visual>
+      <origin xyz="0 0 -1" />
+      <geometry>
+        <box size="20 20 2" />
+      </geometry>
+      <material name="green">
+        <color rgba="0.11 .4 0.11 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="ground_is_world" type="fixed">
+    <parent link="world"/>
+    <child link="ground"/>
+  </joint>
+
+  <!-- Connect foot dummy to ground via a hinge in y -->
+
+  <link name="foot_dummy_L">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="foot_pitch_L" type="revolute">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="ground"/>
+    <child link="foot_dummy_L"/>
+    <axis xyz="1 0.0 0.0"/>
+    <limit lower="-1.570796327" upper="1.570796327"/>
+  </joint>
+
+<!-- Connect foot dummy to foot via a hinge in x -->
+
+  <link name="foot_L">
+    <inertial>
+      <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="3.2E-6" ixy="0.0" ixz="0.0" iyy="3.2E-6" iyz="0.0" izz="3.2E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="foot_roll_L" type="revolute">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="foot_dummy_L"/>
+    <child link="foot_L"/>
+    <axis xyz="0 1 0.0"/>
+    <limit lower="-1.570796327" upper="1.570796327"/>
+  </joint>
+
+<!-- Connect Foot to lower leg -->
+<!-- Lower leg, cylinder of 15cm weighing 150g -->
+
+<link name="lower_leg_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="foot_leg_L" type="fixed">
+  <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+  <parent link="foot_L"/>
+  <child link="lower_leg_L"/>
+</joint>
+
+<!-- Connect lower leg to knee_L -->
+
+ <link name="knee_L">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+<joint name="knee_L" type="revolute">
+  <origin xyz="0.0 0.0 0.17" rpy="0.0 0.0 0.0"/>
+  <parent link="lower_leg_L"/>
+  <child link="knee_L"/>
+  <axis xyz="1 0.0 0.0"/>
+<limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+
+<!-- Connect lower and upper leg -->
+<!-- Upper leg identical to lower leg -->
+
+<link name="upper_leg_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="knee_upper_L" type="fixed">
+  <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+  <parent link="knee_L"/>
+  <child link="upper_leg_L"/>
+</joint>
+
+<!-- Rail in x direction -->
+
+<link name="hip_ball_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <mass value="0.02"/>
+    <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="Hip_Pitch_L" type="revolute">
+  <origin xyz="0.0 0.0 0.17" rpy="0.0 0.0 0.0"/>
+  <parent link="upper_leg_L"/>
+  <child link="hip_ball_L"/>
+  <axis xyz="1 0.0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<!-- base link -->
+
+<link name="hip_L">
+  <inertial>
+    <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="1.2875E-4" ixy="0.0" ixz="0.0" iyy="1.2875E-4" iyz="0.0" izz="7.5E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.05"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<link name="hip_dummy_L">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+<joint name="Hip_roll_L" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  <parent link="hip_ball_L"/>
+  <child link="hip_dummy_L"/>
+  <axis xyz="0.0 1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="fixed_hip_L" type="fixed">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+  <parent link="hip_dummy_L"/>
+  <child link="hip_L"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<link name="middle">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.100"/>
+    <inertia ixx="1.6E-5" ixy="0.0" ixz="0.0" iyy="1.6E-5" iyz="0.0" izz="1.6E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="hip_middle_L" type="fixed">
+  <origin xyz="0.0 0.0 0.09" rpy="0.0 0.0 0.0"/>
+  <parent link="hip_L"/>
+  <child link="middle"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<!-- Balancing mass -->
+
+<link name="balancing_shaft">
+  <inertial>
+    <origin xyz="0.0 0.0 0.12" rpy="0.0 0.0 0.0"/>
+    <mass value="0.250"/>
+    <inertia ixx="8.3958E-4" ixy="0.0" ixz="0.0" iyy="8.3958E-4" iyz="0.0" izz="1.25E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.12" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.20"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="hip_L_shaft" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.570796327 0.0"/>
+  <parent link="middle"/>
+  <child link="balancing_shaft"/>
+  <axis xyz="0.0 1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <mass value="0.100"/>
+    <inertia ixx="1.6E-5" ixy="0.0" ixz="0.0" iyy="1.6E-5" iyz="0.0" izz="1.6E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="shaft_base" type="fixed">
+  <origin xyz="0.0 0.0 0.23" rpy="0.0 0.0 0.0"/>
+  <parent link="balancing_shaft"/>
+  <child link="base_link"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<!-- Add 3 transmissions: Knee, Hip pitch, Hip roll -->
+
+<transmission type="SimpleTransmission" name="Knee_Torque">
+  <actuator name="knee_trans_L" />
+  <joint name="knee_L"/>
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Pitch">
+  <actuator name="Hip_Pitch_L" />
+  <joint name="Hip_Pitch_L" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Roll">
+  <actuator name="Hip_Roll_L" />
+  <joint name="Hip_roll_L" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Balance_Torque">
+  <actuator name="Balance_mass" />
+  <joint name="hip_L_shaft" />
+</transmission>
+
+<!-- RIGHT LEG -->
+
+<!-- Connect foot dummy to ground via a hinge in y -->
+
+  <link name="foot_dummy_R">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="foot_pitch_R" type="revolute">
+    <origin xyz="0.18 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="ground"/>
+    <child link="foot_dummy_R"/>
+    <axis xyz="1 0.0 0.0"/>
+    <limit lower="-1.570796327" upper="1.570796327"/>
+  </joint>
+
+<!-- Connect foot dummy to foot via a hinge in x -->
+
+  <link name="foot_R">
+    <inertial>
+      <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="3.2E-6" ixy="0.0" ixz="0.0" iyy="3.2E-6" iyz="0.0" izz="3.2E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="foot_roll_R" type="revolute">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="foot_dummy_R"/>
+    <child link="foot_R"/>
+    <axis xyz="0 1 0.0"/>
+    <limit lower="-1.570796327" upper="1.570796327"/>
+  </joint>
+
+<!-- Connect Foot to lower leg -->
+<!-- Lower leg, cylinder of 15cm weighing 150g -->
+
+<link name="lower_leg_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="foot_leg_R" type="fixed">
+  <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+  <parent link="foot_R"/>
+  <child link="lower_leg_R"/>
+</joint>
+
+<!-- Connect lower leg to knee -->
+
+ <link name="knee_R">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <mass value="0.020"/>
+      <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+<joint name="knee_R" type="revolute">
+  <origin xyz="0.0 0.0 0.17" rpy="0.0 0.0 0.0"/>
+  <parent link="lower_leg_R"/>
+  <child link="knee_R"/>
+  <axis xyz="1 0.0 0.0"/>
+<limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+
+<!-- Connect lower and upper leg -->
+<!-- Upper leg identical to lower leg -->
+
+<link name="upper_leg_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="2.9625E-4" ixy="0.0" ixz="0.0" iyy="2.9625E-4" iyz="0.0" izz="3E-5"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.075" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.02" length="0.15"/>
+    </geometry>
+    <material name="gray">
+      <color rgba="0.25 0.53 0.96 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="knee_upper_R" type="fixed">
+  <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0"/>
+  <parent link="knee_R"/>
+  <child link="upper_leg_R"/>
+</joint>
+
+<!-- Rail in x direction -->
+
+<link name="hip_ball_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <mass value="0.02"/>
+    <inertia ixx="4.667E-6" ixy="0.0" ixz="0.0" iyy="4.667E-6" iyz="0.0" izz="4E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.570796327 0.0"/>
+    <geometry>
+      <sphere radius="0.02"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<joint name="Hip_Pitch_R" type="revolute">
+  <origin xyz="0.0 0.0 0.17" rpy="0.0 0.0 0.0"/>
+  <parent link="upper_leg_R"/>
+  <child link="hip_ball_R"/>
+  <axis xyz="1 0.0 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<!-- base link -->
+
+<link name="hip_R">
+  <inertial>
+    <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
+    <mass value="0.150"/>
+    <inertia ixx="1.2875E-4" ixy="0.0" ixz="0.0" iyy="1.2875E-4" iyz="0.0" izz="7.5E-6"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.05"/>
+    </geometry>
+      <material name="gray">
+        <color rgba="0.25 0.53 0.96 1.0"/>
+      </material>
+  </visual>
+</link>
+
+<link name="hip_dummy_R">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+<joint name="Hip_roll_R" type="revolute">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  <parent link="hip_ball_R"/>
+  <child link="hip_dummy_R"/>
+  <axis xyz="0.0 -1 0.0"/>
+  <limit lower="-1.570796327" upper="1.570796327"/>
+</joint>
+
+<joint name="fixed_hip_R" type="fixed">
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.570796327 0.0"/>
+  <parent link="hip_dummy_R"/>
+  <child link="hip_R"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<link name="middle_dummy_R">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+<joint name="fixed_middle_R" type="fixed">
+  <origin xyz="0.0 0.0 0.07" rpy="0.0 0 0.0"/>
+  <parent link="hip_R"/>
+  <child link="middle_dummy_R"/>
+  <axis xyz="1 0.0 0.0"/>
+</joint>
+
+<!-- Add 3 transmissions: Knee, Hip pitch, Hip roll -->
+
+<transmission type="SimpleTransmission" name="Knee_Torque_R">
+  <actuator name="knee_trans_R" />
+  <joint name="knee_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Pitch_R">
+  <actuator name="Hip_Pitch_R" />
+  <joint name="Hip_Pitch_R" />
+</transmission>
+
+<transmission type="SimpleTransmission" name="Hip_Torque_Roll_R">
+  <actuator name="Hip_Roll_R" />
+  <joint name="Hip_roll_R" />
+</transmission>
+
+</robot>
